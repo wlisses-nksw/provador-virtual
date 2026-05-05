@@ -360,6 +360,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg)}
               <option value="shopify">Shopify</option>
               <option value="nuvemshop">Nuvemshop</option>
               <option value="woocommerce">WooCommerce</option>
+              <option value="olist">Olist / VNDA</option>
               <option value="lojaintegrada">Loja Integrada</option>
               <option value="vtexio">VTEX IO</option>
               <option value="vtexlegacy">VTEX Legacy</option>
@@ -426,6 +427,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg)}
               <option value="shopify">Shopify</option>
               <option value="nuvemshop">Nuvemshop</option>
               <option value="woocommerce">WooCommerce</option>
+              <option value="olist">Olist / VNDA</option>
               <option value="lojaintegrada">Loja Integrada</option>
               <option value="vtexio">VTEX IO</option>
               <option value="vtexlegacy">VTEX Legacy</option>
@@ -1044,6 +1046,7 @@ function obBuildSnippet() {
     shopify:       'Cole no arquivo <strong>product.liquid</strong> do seu tema (Loja Online > Temas > Editar código), antes do <code>&lt;/body&gt;</code>.',
     nuvemshop:     'Cole no template de produto da Nuvemshop (Personalizar > Editar HTML), antes do <code>&lt;/body&gt;</code>.',
     woocommerce:   'Cole no arquivo <strong>single-product.php</strong> do seu tema filho, antes do <code>&lt;/body&gt;</code>.',
+    olist:         'Cole no template de produto da sua loja Olist (Personalizar > HTML/CSS > produto), antes do <code>&lt;/body&gt;</code>. O widget detecta a imagem automaticamente.',
     lojaintegrada: 'Cole no template de produto via painel da Loja Integrada (Layout > Editar template), antes do <code>&lt;/body&gt;</code>.',
     vtexio:        'Adicione o bloco no arquivo <strong>product.jsonc</strong> ou como bloco customizado via VTEX IO Toolbelt.',
     vtexlegacy:    'Cole no template de produto do portal VTEX (CMS > Sites and channels > template), antes do <code>&lt;/body&gt;</code>.',
@@ -1070,6 +1073,16 @@ function obBuildSnippet() {
            || document.querySelector('[data-product-image]');
     if (img) window.VTON_GARMENT_URL = img.src || img.dataset.src || '';
   });
+${optional}
+<\/script>
+<div id="vton-anchor"><\/div>
+<script src="${wUrl}" defer><\/script>`;
+  } else if (platform === 'olist') {
+    snippet = `<script>
+  window.VTON_API_URL    = '${base}';
+  window.VTON_CLIENT_KEY = '${st.clientKey}';
+  window.VTON_STORE_NAME = '${storeName}';
+  /* Olist/VNDA: imagem detectada automaticamente pelo widget */
 ${optional}
 <\/script>
 <div id="vton-anchor"><\/div>
@@ -1175,6 +1188,7 @@ function buildSnippet() {
     shopify:       'Cole no arquivo <strong>product.liquid</strong> do seu tema (Loja Online > Temas > Editar código), antes do <code>&lt;/body&gt;</code>.',
     nuvemshop:     'Cole no template de produto da sua Nuvemshop (Personalizar > Editar HTML), antes do <code>&lt;/body&gt;</code>.',
     woocommerce:   'Cole no arquivo <strong>single-product.php</strong> do seu tema filho, antes do <code>&lt;/body&gt;</code>.',
+    olist:         'Cole no template de produto da sua loja Olist (Personalizar > HTML/CSS > produto), antes do <code>&lt;/body&gt;</code>. O widget detecta a imagem automaticamente.',
     lojaintegrada: 'Cole no template de produto via painel da Loja Integrada (Layout > Editar template), antes do <code>&lt;/body&gt;</code>.',
     vtexio:        'Adicione o bloco no arquivo <strong>product.jsonc</strong> ou como um bloco customizado via VTEX IO Toolbelt.',
     vtexlegacy:    'Cole no template de produto do portal VTEX (CMS > Sites and channels > template), antes do <code>&lt;/body&gt;</code>.',
@@ -1194,6 +1208,16 @@ function buildSnippet() {
            || document.querySelector('[data-product-image]');
     if (img) window.VTON_GARMENT_URL = img.src || img.dataset.src || '';
   });
+${optional}
+<\/script>
+<div id="vton-anchor"><\/div>
+<script src="${wUrl}" defer><\/script>`;
+  } else if (platform === 'olist') {
+    snippet = `<script>
+  window.VTON_API_URL    = '${base}';
+  window.VTON_CLIENT_KEY = '${st.clientKey}';
+  window.VTON_STORE_NAME = '${storeName}';
+  /* Olist/VNDA: imagem detectada automaticamente pelo widget */
 ${optional}
 <\/script>
 <div id="vton-anchor"><\/div>

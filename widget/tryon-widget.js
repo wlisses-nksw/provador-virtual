@@ -414,6 +414,40 @@
     return null;
   }
 
+  // ─── Detecção de imagem para Olist / VNDA ────────────────────────────────
+  function detectVndaImage() {
+    // Troca prefixo de tamanho para 1200x (ex: /150x/ → /1200x/)
+    const upsize = src => src.replace(/\/\d+x\//, '/1200x/');
+
+    // 1. data-zoom-src no slide ativo (já vem em 1200px, mas fazemos upsize por segurança)
+    const activeZoom = document.querySelector('.swiper-slide-active [data-zoom-src]');
+    if (activeZoom) {
+      const src = activeZoom.getAttribute('data-zoom-src') || '';
+      if (src.includes('cdn.vnda.com.br')) return upsize(src);
+    }
+
+    // 2. Primeiro data-zoom-src da galeria
+    const firstZoom = document.querySelector('[data-zoom-src]');
+    if (firstZoom) {
+      const src = firstZoom.getAttribute('data-zoom-src') || '';
+      if (src.includes('cdn.vnda.com.br')) return upsize(src);
+    }
+
+    // 3. Imagem carregada no slide ativo (com upgrade de tamanho)
+    const activeImg = document.querySelector('.swiper-slide-active img');
+    if (activeImg && activeImg.src && activeImg.src.includes('cdn.vnda.com.br')) {
+      return upsize(activeImg.src);
+    }
+
+    // 4. Imagem carregada com CDN da VNDA (qualquer img visível)
+    const loaded = Array.from(document.querySelectorAll('img')).find(img =>
+      img.src && img.src.includes('cdn.vnda.com.br') && img.naturalWidth > 0
+    );
+    if (loaded) return upsize(loaded.src);
+
+    return null;
+  }
+
   // ─── Constrói o modal ──────────────────────────────────────────────────────
   function buildModal(storeName) {
     const leadSub = storeName
@@ -577,6 +611,7 @@
     const garmentUrl = toAbsoluteUrl(_safeGarment
       || document.querySelector('[data-vton-image]')?.dataset?.vtonImage
       || detectNuvemshopImage()
+      || detectVndaImage()
       || document.querySelector('.product__media img')?.src
       || document.querySelector('.product-featured-img')?.src
       || document.querySelector('.woocommerce-product-gallery__image img')?.src

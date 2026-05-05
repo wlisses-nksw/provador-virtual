@@ -561,6 +561,7 @@ tbody tr:hover td { background: #fafbff; }
         <option value="shopify">Shopify</option>
         <option value="nuvemshop">Nuvemshop</option>
         <option value="woocommerce">WooCommerce</option>
+        <option value="olist">Olist / VNDA</option>
         <option value="lojaintegrada">Loja Integrada</option>
         <option value="vtexio">VTEX IO</option>
         <option value="vtexlegacy">VTEX Legacy</option>
@@ -1556,6 +1557,8 @@ function updateSnippet() {
   let snippet;
   if (platform === 'vtexio') {
     snippet = `<script>\n  window.VTON_API_URL    = '${base}';\n  window.VTON_CLIENT_KEY = '${_snippetKey}';\n  window.VTON_STORE_NAME = '${store}';\n  window.addEventListener('load', function() {\n    var img = document.querySelector('[class*="productImageTag"]')\n           || document.querySelector('[class*="product-image"] img')\n           || document.querySelector('.product-gallery__image img')\n           || document.querySelector('.product-featured-image img')\n           || document.querySelector('[data-product-image]');\n    if (img) window.VTON_GARMENT_URL = img.src || img.dataset.src || '';\n  });\n${optional}\n<\/script>\n<div id="vton-anchor"><\/div>\n<script src="${wUrl}" defer><\/script>`;
+  } else if (platform === 'olist') {
+    snippet = `<script>\n  window.VTON_API_URL    = '${base}';\n  window.VTON_CLIENT_KEY = '${_snippetKey}';\n  window.VTON_STORE_NAME = '${store}';\n  /* Olist/VNDA: imagem detectada automaticamente pelo widget (cdn.vnda.com.br) */\n${optional}\n<\/script>\n<div id="vton-anchor"><\/div>\n<script src="${wUrl}" defer><\/script>`;
   } else {
     snippet = `<script>\n  window.VTON_API_URL     = '${base}';\n  window.VTON_CLIENT_KEY  = '${_snippetKey}';\n  window.VTON_GARMENT_URL = "${garments[platform] || garments.shopify}";\n  window.VTON_STORE_NAME  = '${store}';\n${optional}\n<\/script>\n<div id="vton-anchor"><\/div>\n<script src="${wUrl}" defer><\/script>`;
   }
